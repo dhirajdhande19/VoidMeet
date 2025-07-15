@@ -1,4 +1,3 @@
-Frontend/VoidMeet/node_modules
-Frontend/VoidMeet/.env
-Backend/node_modules
-Backend/.env
+# Ignore env & node_modules for both frontend and backend
+**/node_modules/
+**/.env
