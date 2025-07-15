@@ -1,6 +1,2 @@
-let IS_PROD = true;
-const server = IS_PROD
-  ? "https://voidmeet-backend.onrender.com/"
-  : "http://localhost:8000";
-
+const server = "https://voidmeet-backend.onrender.com";
 export default server;
