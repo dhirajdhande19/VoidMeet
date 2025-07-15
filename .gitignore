@@ -1,2 +1,4 @@
 Frontend/VoidMeet/node_modules
+Frontend/VoidMeet/.env
 Backend/node_modules
+Backend/.env

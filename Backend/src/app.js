@@ -4,10 +4,14 @@ import { Server } from "socket.io";
 import mongoose from "mongoose";
 import cors from "cors";
 import { connectToSocket } from "./controllers/socketManager.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const server = createServer(app);
 const io = connectToSocket(server);
+
+const MONGO_ATLAS_URL = process.env.ATLAS_URL;
 
 app.set("port", process.env.PORT || 8000);
 app.use(cors());
@@ -20,9 +24,7 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 app.use("/api/v1/users", userRoute);
 
 const start = async () => {
-  const connectionDB = await mongoose.connect(
-    "mongodb+srv://dhirajdhande2:VvhmPYHgkuJmgNq0@cluster0.cup9r9m.mongodb.net/"
-  );
+  const connectionDB = await mongoose.connect(MONGO_ATLAS_URL);
   console.log(`MONGO Connected to Host: ${connectionDB.connection.host}`);
 
   server.listen(8000, () => {
