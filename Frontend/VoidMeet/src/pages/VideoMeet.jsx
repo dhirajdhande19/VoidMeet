@@ -24,8 +24,9 @@ import StopScreenShareOutlinedIcon from "@mui/icons-material/StopScreenShareOutl
 
 import { nanoid } from "nanoid";
 import axios from "axios";
+import server from "../enviornment";
 
-const server_url = "http://localhost:8000";
+const server_url = server;
 
 var connections = {};
 
