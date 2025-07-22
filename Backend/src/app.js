@@ -22,6 +22,9 @@ app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
 
 app.use("/api/v1/users", userRoute);
+app.get("/ping", (req, res) => {
+  res.status(200).json({ message: "Ok" });
+});
 
 const start = async () => {
   const connectionDB = await mongoose.connect(MONGO_ATLAS_URL);
