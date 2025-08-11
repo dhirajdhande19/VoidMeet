@@ -45,7 +45,7 @@ export default function Authentication() {
   // }
 
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState();
@@ -58,7 +58,7 @@ export default function Authentication() {
     try {
       if (form === true) {
         /* i.e if login? */
-        let result = await handleLogin(username, password);
+        let result = await handleLogin(email, password);
         //console.log(result);
         setMessage(result);
         setError("");
@@ -66,21 +66,22 @@ export default function Authentication() {
       if (form === false) {
         /* i.e if register? */
 
-        if (!name || !username || !password) {
+        if (!name || !email || !password) {
           return setError("Please provide data to continue");
         }
 
-        let result = await handleRegister(name, username, password);
-        // console.log(result);
+        let result = await handleRegister(name, email, password);
+        console.log(result);
         setMessage(result);
         setOpen(true);
         setError("");
         setName("");
-        setUsername("");
+        setEmail("");
         setPassword("");
         setForm(true);
       }
     } catch (err) {
+      //return console.log("err: ", err);
       let message = err.response.data.message;
       setError(message);
     }
@@ -148,13 +149,13 @@ export default function Authentication() {
 
               <div>
                 <TextField
-                  id="username"
-                  label="Username"
+                  id="email"
+                  label="Email"
                   variant="standard"
-                  value={username}
+                  value={email}
                   required
                   onChange={(e) => {
-                    setUsername(e.target.value);
+                    setEmail(e.target.value);
                   }}
                 />
               </div>
@@ -207,10 +208,10 @@ export default function Authentication() {
 //           <div>
 //             <TextField
 //               id="standard-basic"
-//               label="Username"
+//               label="Email"
 //               variant="standard"
 //               onChange={(e) => {
-//                 setUsername(e.target.value);
+//                 setEmail(e.target.value);
 //               }}
 //             />
 //           </div>

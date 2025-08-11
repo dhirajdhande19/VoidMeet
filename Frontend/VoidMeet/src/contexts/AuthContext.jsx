@@ -17,13 +17,14 @@ export const AuthProvider = ({ children }) => {
 
   const router = useNavigate();
 
-  const handleRegister = async (name, username, password) => {
+  const handleRegister = async (name, email, password) => {
     try {
       let request = await client.post("/register", {
         name: name,
-        username: username,
+        email: email,
         password: password,
       });
+      //return console.log(request);
 
       if (request.status === httpStatus.CREATED) {
         return request.data.message;
@@ -33,10 +34,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (email, password) => {
     try {
       let request = await client.post("/login", {
-        username: username,
+        email: email,
         password: password,
       });
 

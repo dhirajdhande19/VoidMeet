@@ -17,6 +17,7 @@ app.set("port", process.env.PORT || 8000);
 app.use(cors());
 
 import userRoute from "./routes/user.router.js";
+//import { authMiddleware } from "./Middlewares.js";
 
 app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));

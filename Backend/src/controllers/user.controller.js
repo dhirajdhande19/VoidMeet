@@ -3,66 +3,106 @@ import { Meeting } from "../models/meeting.model.js";
 import httpStatus from "http-status";
 import bcrypt, { hash } from "bcrypt";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
-  const { name, username, password } = req.body;
+  // await User.collection.dropIndex("username_1");
+  // return;
+  const { name, email, password } = req.body ?? {};
 
-  // if (!name || !username || !password) {
-  //   return res.status(400).json({ message: "Please provide data to continue" });
-  // }
+  if (!name || !email || !password) {
+    return res
+      .status(httpStatus.BAD_REQUEST)
+      .json({ message: "Please provide data to continue" });
+  }
+
+  //email check call
+  if (!validateEmail(email)) {
+    return res
+      .status(httpStatus.BAD_REQUEST)
+      .json({ message: "Invalid email format" });
+  }
 
   try {
-    const existingUser = await User.findOne({ username });
+    // To check if user alredy exist or not
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res
-        .status(httpStatus.FOUND)
-        .json({ message: "User Already Exits!" });
+      return res.status(httpStatus.FOUND).json({
+        message:
+          "User with the given email already exits! Please try another email.",
+      });
     }
 
+    // to hash the password entered by user
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // thus new user is created
     const newUser = new User({
-      name: name,
-      username: username,
+      name,
+      email,
       password: hashedPassword,
     });
 
     await newUser.save();
-    res.status(httpStatus.CREATED).json({ message: "User Registered" });
+    return res
+      .status(httpStatus.CREATED)
+      .json({ message: "User Registered Successfully" });
   } catch (e) {
-    res.json({ message: `Something went wrong ${e}` });
+    res.status(httpStatus.BAD_REQUEST).json({
+      message: `${e}`,
+    });
   }
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body ?? {};
 
-  if (!username || !password) {
-    return res.status(400).json({ message: "Please provide data to continue" });
+  if (!email || !password) {
+    return res
+      .status(httpStatus.BAD_REQUEST)
+      .json({ message: "Please provide data to continue" });
+  }
+
+  //email check call and check
+  if (!validateEmail(email)) {
+    return res
+      .status(httpStatus.BAD_REQUEST)
+      .json({ message: "Invalid email format" });
   }
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res
         .status(httpStatus.NOT_FOUND)
-        .json({ message: "User not found" });
+        .json({ message: "User not found!" });
     }
 
     let isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (isPasswordCorrect) {
-      let token = crypto.randomBytes(20).toString("hex");
-      user.token = token;
-      await user.save();
+      // let token = crypto.randomBytes(20).toString("hex");
+      // user.token = token;
+      // await user.save();
 
-      return res.status(httpStatus.OK).json({ token: `${token}` });
+      // return res.status(httpStatus.OK).json({ token: `${token}` });
+
+      // create token for user
+      const token = jwt.sign(
+        { id: user._id, email: user.email }, // payload
+        process.env.JWT_SECRET, // Secret from .env
+        { expiresIn: process.env.JWT_EXPIRES_IN } // expiry timeline
+      );
+
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "Logged in Successfully", token });
     } else {
       return res
         .status(httpStatus.UNAUTHORIZED)
-        .json({ message: "Invalid username or password" });
+        .json({ message: "Invalid email or password" });
     }
   } catch (e) {
     return res.status(500).json({ message: `Something went wrong ${e}` });
@@ -98,4 +138,13 @@ const addToHistory = async (req, res) => {
   }
 };
 
-export { register, login, getUserHistory, addToHistory };
+// Validate email before saving user into db
+const validateEmail = (email) => {
+  return /^\S+@\S+\.\S+$/.test(email);
+};
+
+const getDashboard = (req, res) => {
+  res.json({ message: `Hello ${req.user.email}` });
+};
+
+export { register, login, getUserHistory, addToHistory, getDashboard };

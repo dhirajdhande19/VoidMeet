@@ -4,12 +4,15 @@ import {
   login,
   addToHistory,
   getUserHistory,
+  getDashboard,
 } from "../controllers/user.controller.js";
+import { authMiddleware } from "../Middlewares.js";
 
 const router = Router();
 
-router.route("/login").post(login);
 router.route("/register").post(register);
+router.route("/login").post(login);
+router.get("/dashboard", authMiddleware, getDashboard);
 router.route("/add_to_activity").post(addToHistory);
 router.route("/get_all_activity").get(getUserHistory);
 
