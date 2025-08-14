@@ -11,7 +11,8 @@ import WithAuth from "../utils/withAuth";
 import "../styles/History.css";
 
 function History() {
-  const { getUserHistory } = useContext(AuthContext);
+  const { getUserHistory, clearOneMeetingCode, clearAllHistory } =
+    useContext(AuthContext);
 
   const [meetings, setMeetings] = useState([]);
 
@@ -38,6 +39,26 @@ function History() {
     return `${day}/${month}/${year}`;
   };
 
+  const clearOne = async (id) => {
+    try {
+      //return console.log(id);
+      await clearOneMeetingCode(id);
+      setMeetings((prev) => prev.filter((m) => m._id !== id)); // removes (filters) the card with this "id" from all meetings arr -> Update's UI
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const clearAll = async () => {
+    try {
+      //return console.log(meetings);
+      await clearAllHistory();
+      setMeetings([]); // removes (filters) the card with this "id" from all meetings arr -> Update's UI
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div className="history-container">
       {meetings.length === 0 ? (
@@ -48,7 +69,8 @@ function History() {
       ) : (
         <h3>
           {" "}
-          Your Meeting History
+          Your Meeting History{" "}
+          <button onClick={() => clearAll(meetings)}>clear all history</button>
           <HistoryIcon />
         </h3>
       )}
@@ -58,10 +80,11 @@ function History() {
           return (
             <div className="one-card" key={i}>
               <Card>
-                <CardContent>
+                <CardContent key={e._id}>
                   <p className="card-head">Meeting Details</p>
                   <p>Code: {e.meetingCode}</p>
                   <p>Date: {formatDate(e.date)}</p>
+                  <button onClick={() => clearOne(e._id)}>delete</button>
                 </CardContent>
               </Card>
               <br />

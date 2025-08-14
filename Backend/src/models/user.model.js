@@ -11,6 +11,7 @@ const userSchema = new Schema({
     match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
   },
   password: { type: String, required: true },
+  meetings: [{ type: mongoose.Schema.ObjectId, ref: "Meeting" }],
   //token: { type: String },
 });
 

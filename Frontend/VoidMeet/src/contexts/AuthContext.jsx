@@ -53,9 +53,11 @@ export const AuthProvider = ({ children }) => {
 
   const getUserHistory = async () => {
     try {
+      const token = localStorage.getItem("token");
+      //if (!token) return console.error("No token Provided! Please sign up :)");
       let request = await client.get("/get_all_activity", {
-        params: {
-          token: localStorage.getItem("token"),
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       });
       return request.data;
@@ -64,12 +66,52 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const addToUserHistory = async (meetingCode) => {
+  const addToUserHistory = async (code, token) => {
     try {
-      let request = await client.post("/add_to_activity", {
-        token: localStorage.getItem("token"),
-        meeting_code: meetingCode,
+      //const token = localStorage.getItem("token");
+      //if (!token) return console.error("No token Provided! Please sign up :)");
+      let request = await client.post(
+        "/add_to_activity",
+        {
+          meeting_code: code,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return request;
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  const clearOneMeetingCode = async (id) => {
+    try {
+      //return console.log(id);
+      let request = await client.delete(`/history/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
+      //return console.log(request);
+      return request;
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  const clearAllHistory = async () => {
+    try {
+      //return console.log(id);
+      let request = await client.delete("/history", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      //return console.log(request);
       return request;
     } catch (e) {
       throw e;
@@ -83,6 +125,8 @@ export const AuthProvider = ({ children }) => {
     addToUserHistory,
     handleRegister,
     handleLogin,
+    clearOneMeetingCode,
+    clearAllHistory,
   };
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>;

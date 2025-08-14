@@ -23,14 +23,79 @@ function Home() {
   const { addToUserHistory } = useContext(AuthContext);
 
   let handleJoinVideoCall = async () => {
-    if (!meetingCode) {
-      setMeetingCode(url);
-      await addToUserHistory(url);
-      navigate(`/${url}`);
+    const token = localStorage.getItem("token");
+    const code = meetingCode || url; // meeting code priority, fallback to url
+
+    if (!code) {
+      console.error("No meeting code available!");
       return;
     }
-    await addToUserHistory(meetingCode);
-    navigate(`/${meetingCode}`);
+
+    if (token) {
+      // If token exists, try to save meeting to history
+      await addToUserHistory(code, token);
+    }
+
+    navigate(`/${code}`);
+
+    // const token = localStorage.getItem("token");
+    // first check if user have token if token save meeting code else skip
+    // if (token) {
+    //   if (meetingCode) {
+    //     console.log(meetingCode);
+    //     await addToUserHistory(meetingCode, token);
+    //     navigate(`/${meetingCode}`);
+    //   }
+    //   // if meeting code isn't available
+    //   setMeetingCode(url);
+    //   await addToUserHistory(url);
+    //   console.log(url);
+    //   navigate(`/${url}`);
+    //   return;
+    // }
+
+    // if (meetingCode) {
+    //   if (token) {
+    //     // is user?
+    //     console.log(meetingCode);
+    //     await addToUserHistory(meetingCode, token);
+    //     navigate(`/${meetingCode}`);
+    //   } else {
+    //     // not user!
+    //     console.log(meetingCode);
+    //     navigate(`/${meetingCode}`);
+    //   }
+    // } else {
+    //   // if meeting code isn't available
+    //   if (token) {
+    //     // is user?
+    //     setMeetingCode(url);
+    //     await addToUserHistory(url);
+    //     console.log(url);
+    //     navigate(`/${url}`);
+    //     return;
+    //   } else {
+    //     // not a user
+    //     console.log(url);
+    //     navigate(`/${url}`);
+    //     return;
+    //   }
+    // }
+
+    // now user have token but is it valid and real token ?
+    //isUser(token);
+
+    // // ok everything is good but does user have a meeting code ?
+    // if (!meetingCode) {
+    //   setMeetingCode(url);
+    //   await addToUserHistory(url);
+    //   console.log(url);
+    //   navigate(`/${url}`);
+    //   return;
+    // }
+    // console.log(meetingCode);
+    // await addToUserHistory(meetingCode);
+    // navigate(`/${meetingCode}` || `/${url}`);
   };
 
   const textRef = useRef();
@@ -134,7 +199,8 @@ function Home() {
   );
 }
 
-export default WithAuth(Home);
+export default Home;
+//export default WithAuth(Home);
 
 // let fnx = () => {
 //   <div className="container">

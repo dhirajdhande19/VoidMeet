@@ -4,6 +4,8 @@ import httpStatus from "http-status";
 import bcrypt, { hash } from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { authMiddleware } from "../Middlewares.js";
+import { trusted } from "mongoose";
 
 const register = async (req, res) => {
   // await User.collection.dropIndex("username_1");
@@ -110,30 +112,49 @@ const login = async (req, res) => {
 };
 
 const getUserHistory = async (req, res) => {
-  const { token } = req.query;
+  const { id } = req.user;
   try {
-    const user = await User.findOne({ token: token });
-    const meetings = await Meeting.find({ user_id: user.username });
-    res.json(meetings);
+    const user = await User.findOne({ _id: id });
+    const meetings = await Meeting.find({ user_id: user._id });
+    res.json(meetings); //  ->  meetings
   } catch (e) {
     res.json(`Something went wrong : ${e}`);
   }
 };
 
 const addToHistory = async (req, res) => {
-  const { token, meeting_code } = req.body;
+  // if (req.user) {
+
+  // }
+
+  //const meeting_code = "kgfh";
   try {
-    const user = await User.findOne({ token: token });
+    // if (req.user) {
+    // console.log(req.user);
+    // return res.json(req);
+    const { id } = req.user;
+    const { meeting_code } = req.body;
+    //const meeting_code = "asfkajs";
+    //const user = req.user;
+    const user = await User.findOne({ _id: id });
     const newMeeting = new Meeting({
-      user_id: user.username,
+      user_id: user._id,
       meetingCode: meeting_code,
     });
 
     await newMeeting.save();
-    res.status(httpStatus.CREATED).json({ message: "Added code to history" });
+    //await User.save();
+    //console.log(user.populate());
+    await User.findByIdAndUpdate(id, { $push: { meetings: newMeeting._id } });
+    res
+      .status(httpStatus.CREATED)
+      .json({ message: "Added code to history", user }); // -> message: "Added code to history" -> remove user later on
+    // } else {
+    //   res.status(httpStatus.OK).json({ message: "Not a user" });
+    // }
   } catch (e) {
     res.json({
-      message: `Something went wrong : ${e}`,
+      message: `${e}`,
     });
   }
 };
@@ -147,4 +168,63 @@ const getDashboard = (req, res) => {
   res.json({ message: `Hello ${req.user.email}` });
 };
 
-export { register, login, getUserHistory, addToHistory, getDashboard };
+const clearOneHistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    //return console.log(id);
+    const meeting = await Meeting.findById(id);
+    //return console.log(meeting);
+    if (meeting) {
+      const user = await User.findByIdAndUpdate(meeting.user_id, {
+        $pull: { meetings: meeting._id },
+      });
+      //console.log(user);
+
+      await Meeting.findByIdAndDelete(id);
+      res
+        .status(httpStatus.OK)
+        .json({ message: "Meeting history for one code deleted sucessfully" });
+
+      //console.log("deleted", meeting);
+    } else {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "this meeting history dosen't exist anymore" });
+    }
+
+    //await User.findOne({_id: id})
+  } catch (e) {
+    return res.status(500).json({ message: `${e}` });
+  }
+};
+
+const clearAllHistory = async (req, res) => {
+  try {
+    const { id } = req.user;
+    //const { meetings } = req.body;
+    //return console.log(req.body);
+    const user = await User.findById(id);
+    const meetings = await Meeting.deleteMany({ user_id: id });
+    await User.findByIdAndUpdate(id, {
+      $set: { meetings: [] },
+    });
+
+    res.status(httpStatus.OK).json({ message: "All History Cleared!" });
+
+    //return console.log(user, meetings);
+  } catch (e) {
+    return res
+      .status(httpStatus.INTERNAL_SERVER_ERROR)
+      .json({ message: `${e}` });
+  }
+};
+
+export {
+  register,
+  login,
+  getUserHistory,
+  addToHistory,
+  getDashboard,
+  clearOneHistory,
+  clearAllHistory,
+};
