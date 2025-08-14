@@ -112,8 +112,10 @@ const login = async (req, res) => {
 };
 
 const getUserHistory = async (req, res) => {
-  const { id } = req.user;
+  console.log("REQ USER:", req.user);
+
   try {
+    const { id } = req.user;
     const user = await User.findById(id);
     const meetings = await Meeting.find({ user_id: id });
     res.json(meetings); //  ->  meetings
