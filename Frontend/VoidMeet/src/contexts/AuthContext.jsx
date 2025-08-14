@@ -51,18 +51,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const getUserHistory = async (req, res) => {
+  const getUserHistory = async () => {
     try {
-      const { id } = req.user;
-      const userId = mongoose.Types.ObjectId(id);
-
-      // Fetch user and populate meetings
-      const user = await User.findById(userId).populate("meetings");
-
-      // Return the meetings array
-      res.json(user.meetings || []);
+      //if (!token) return console.error("No token Provided! Please sign up :)");
+      let request = await client.get("/get_all_activity", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      console.log(request);
+      return request.data;
     } catch (e) {
-      res.status(500).json({ message: e.message });
+      throw e;
     }
   };
 

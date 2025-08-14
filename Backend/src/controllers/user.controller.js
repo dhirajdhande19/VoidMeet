@@ -6,6 +6,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { authMiddleware } from "../Middlewares.js";
 import { trusted } from "mongoose";
+import mongoose from "mongoose";
 
 const register = async (req, res) => {
   // await User.collection.dropIndex("username_1");
@@ -111,16 +112,31 @@ const login = async (req, res) => {
   }
 };
 
-const getUserHistory = async (req, res) => {
-  console.log("REQ USER:", req.user);
+// const getUserHistory = async (req, res) => {
+//   console.log("REQ USER:", req.user);
 
+//   try {
+//     const { id } = req.user;
+//     const user = await User.findById(id);
+//     const meetings = await Meeting.find({ user_id: id });
+//     res.json(meetings); //  ->  meetings
+//   } catch (e) {
+//     res.json({ message: `${e}` });
+//   }
+// };
+
+const getUserHistory = async (req, res) => {
   try {
     const { id } = req.user;
-    const user = await User.findById(id);
-    const meetings = await Meeting.find({ user_id: id });
-    res.json(meetings); //  ->  meetings
+    const userId = mongoose.Types.ObjectId.createFromHexString(id);
+
+    // Fetch user and populate meetings
+    const user = await User.findById(userId).populate("meetings");
+
+    // Return the meetings array
+    res.json(user.meetings || []);
   } catch (e) {
-    res.json({ message: `${e}` });
+    res.status(500).json({ message: e.message });
   }
 };
 
