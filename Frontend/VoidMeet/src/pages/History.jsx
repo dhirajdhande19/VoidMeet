@@ -22,8 +22,9 @@ function History() {
     const fetchHistory = async () => {
       try {
         const history = await getUserHistory();
-        setMeetings(history);
+        setMeetings(Array.isArray(history) ? history : []);
       } catch (e) {
+        setMeetings([]); //fallback to empty arr
         // implement snackbar maybe
       }
     };
@@ -61,7 +62,7 @@ function History() {
 
   return (
     <div className="history-container">
-      {meetings.length === 0 ? (
+      {!Array.isArray(meetings) || meetings.length === 0 ? (
         <h3>
           No History yet!
           <SentimentVeryDissatisfiedIcon />
@@ -70,12 +71,12 @@ function History() {
         <h3>
           {" "}
           Your Meeting History{" "}
-          <button onClick={() => clearAll(meetings)}>clear all history</button>
+          <button onClick={() => clearAll()}>clear all history</button>
           <HistoryIcon />
         </h3>
       )}
 
-      {meetings.length !== 0 ? (
+      {Array.isArray(meetings) && meetings.length !== 0 ? (
         meetings.map((e, i) => {
           return (
             <div className="one-card" key={i}>
