@@ -22,7 +22,7 @@ function History() {
     const fetchHistory = async () => {
       try {
         const history = await getUserHistory();
-        setMeetings(Array.isArray(history) ? history : []);
+        setMeetings(history);
       } catch (e) {
         setMeetings([]); //fallback to empty arr
         // implement snackbar maybe
