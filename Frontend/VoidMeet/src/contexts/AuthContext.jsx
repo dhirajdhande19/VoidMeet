@@ -53,14 +53,13 @@ export const AuthProvider = ({ children }) => {
 
   const getUserHistory = async () => {
     try {
-      const token = localStorage.getItem("token");
       //if (!token) return console.error("No token Provided! Please sign up :)");
       let request = await client.get("/get_all_activity", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(request.data);
+      console.log(request);
       return request.data;
     } catch (e) {
       throw e;

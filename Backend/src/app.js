@@ -7,6 +7,7 @@ import { connectToSocket } from "./controllers/socketManager.js";
 import dotenv from "dotenv";
 dotenv.config();
 
+// import path from "path";
 const app = express();
 const server = createServer(app);
 const io = connectToSocket(server);
@@ -21,6 +22,15 @@ import userRoute from "./routes/user.router.js";
 
 app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
+
+// const __dirname = path.resolve();
+
+// Serve frontend build
+// app.use(express.static(path.join(__dirname, "../Frontend/VoidMeet/dist")));
+
+// app.get(/.*/, (req, res) => {
+//   res.sendFile(path.join(__dirname, "../Frontend/VoidMeet/dist/index.html"));
+// });
 
 app.use("/api/v1/users", userRoute);
 app.get("/ping", (req, res) => {
@@ -37,3 +47,18 @@ const start = async () => {
 };
 
 start();
+
+// import path from "path";
+// import express from "express";
+
+// const app = express();
+// const __dirname = path.resolve();
+
+// // Serve frontend build
+// app.use(express.static(path.join(__dirname, "Frontend/VoidMeet/dist")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "Frontend/VoidMeet/dist", "index.html"));
+// });
+
+// app.listen(8000, () => console.log("Server running on http://localhost:8000"));
