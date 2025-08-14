@@ -62,7 +62,7 @@ function History() {
 
   return (
     <div className="history-container">
-      {!Array.isArray(meetings) || meetings.length === 0 ? (
+      {meetings.length === 0 ? (
         <h3>
           No History yet!
           <SentimentVeryDissatisfiedIcon />
@@ -76,7 +76,7 @@ function History() {
         </h3>
       )}
 
-      {Array.isArray(meetings) && meetings.length !== 0 ? (
+      {meetings.length !== 0 ? (
         meetings.map((e, i) => {
           return (
             <div className="one-card" key={i}>
