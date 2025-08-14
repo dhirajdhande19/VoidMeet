@@ -24,7 +24,7 @@ function History() {
         const history = await getUserHistory();
         setMeetings(history);
       } catch (e) {
-        setMeetings([]); //fallback to empty arr
+        //setMeetings([]); //fallback to empty arr
         // implement snackbar maybe
       }
     };
