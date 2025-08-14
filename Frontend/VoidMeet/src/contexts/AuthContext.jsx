@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(request.data);
       return request.data;
     } catch (e) {
       throw e;
