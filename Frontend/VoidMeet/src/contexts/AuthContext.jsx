@@ -51,17 +51,66 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // const getUserHistory = async () => {
+  //   try {
+  //     //if (!token) return console.error("No token Provided! Please sign up :)");
+  //     let request = await client.get("/get_all_activity", {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     console.log(request);
+  //     return request.data;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // };
+
   const getUserHistory = async () => {
     try {
-      //if (!token) return console.error("No token Provided! Please sign up :)");
+      const token = localStorage.getItem("token");
+      console.log("=== getUserHistory() called ===");
+      console.log("Environment MODE:", import.meta.env.MODE);
+      console.log(
+        "Token from localStorage:",
+        token ? token.slice(0, 20) + "..." : "❌ No token found"
+      );
+
+      if (!token) {
+        console.error("❌ No token Provided! Please sign up or log in.");
+        return [];
+      }
+
+      console.log(
+        "Sending request to:",
+        client.defaults.baseURL + "/get_all_activity"
+      );
+
       let request = await client.get("/get_all_activity", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      console.log(request);
+
+      console.log("✅ Response Status:", request.status);
+      console.log("✅ Response Data:", request.data);
+
       return request.data;
     } catch (e) {
+      console.error("💥 Error in getUserHistory:", e.message || e);
+      if (e.response) {
+        console.error(
+          "📩 Server responded with:",
+          e.response.status,
+          e.response.data
+        );
+      } else if (e.request) {
+        console.error(
+          "📡 No response received from server. Possible CORS or network issue."
+        );
+      } else {
+        console.error("⚠️ Error setting up request:", e.message);
+      }
       throw e;
     }
   };

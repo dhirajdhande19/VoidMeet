@@ -127,48 +127,92 @@ const login = async (req, res) => {
 
 const getUserHistory = async (req, res) => {
   try {
-    const { id } = req.user;
-    // const userId = mongoose.Types.ObjectId.createFromHexString(id);
-    // return console.log(userId, id);
+    console.log("====== /get_all_activity request ======");
+    console.log("Auth Header:", req.headers.authorization);
 
-    // Fetch user and populate meetings
-    const user = await User.findById(id).populate("meetings");
+    if (!req.user) {
+      console.error("❌ No req.user found! Check JWT middleware.");
+      return res
+        .status(401)
+        .json({ error: "Unauthorized - No user found in request" });
+    }
 
-    // Return the meetings array
-    res.status(httpStatus.OK).json(user.meetings);
-    // res.json([
-    //   {
-    //     _id: "689dffd1709955b89def9ea3",
-    //     user_id: "689de080d237bedf3c690bd0",
-    //     meetingCode: "zs_tbA",
-    //     date: "2025-08-14T15:25:05.033Z",
-    //     __v: 0,
-    //   },
-    //   {
-    //     _id: "689dffd4709955b89def9ea7",
-    //     user_id: "689de080d237bedf3c690bd0",
-    //     meetingCode: "tyfyhn",
-    //     date: "2025-08-14T15:25:08.902Z",
-    //     __v: 0,
-    //   },
-    //   {
-    //     _id: "689edfd9df64c496ab57f22d",
-    //     user_id: "689de080d237bedf3c690bd0",
-    //     meetingCode: "ZBBIpC",
-    //     date: "2025-08-15T07:20:57.260Z",
-    //     __v: 0,
-    //   },
-    //   {
-    //     _id: "689edfe6df64c496ab57f233",
-    //     user_id: "689de080d237bedf3c690bd0",
-    //     meetingCode: "safdewrt54",
-    //     date: "2025-08-15T07:21:10.730Z",
-    //     __v: 0,
-    //   },
-    // ]);
-  } catch (e) {
-    res.status(500).json({ message: e.message });
+    console.log("Decoded user from token:", req.user);
+
+    const userId = req.user.id || req.user._id;
+    console.log("User ID extracted:", userId);
+
+    // Validate userId format
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      console.error("❌ Invalid userId format");
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+
+    // Check if user exists in DB
+    const userExists = await User.findById(userId);
+    console.log("User exists in DB:", !!userExists);
+
+    if (!userExists) {
+      console.error("❌ No user found in DB with this ID");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Fetch meetings for the user
+    const meetings = await Meeting.find({ user_id: userId }).sort({ date: -1 });
+
+    console.log(`✅ Found ${meetings.length} meetings for user`);
+    console.log("Meetings data:", meetings);
+
+    res.json(meetings);
+  } catch (err) {
+    console.error("💥 Error in /get_all_activity:", err.message);
+    console.error(err.stack);
+    res.status(500).json({ error: "Server error", details: err.message });
   }
+
+  //   try {
+  //     const { id } = req.user;
+  //     // const userId = mongoose.Types.ObjectId.createFromHexString(id);
+  //     // return console.log(userId, id);
+
+  //     // Fetch user and populate meetings
+  //     const user = await User.findById(id).populate("meetings");
+
+  //     // Return the meetings array
+  //     res.status(httpStatus.OK).json(user.meetings);
+  //     // res.json([
+  //     //   {
+  //     //     _id: "689dffd1709955b89def9ea3",
+  //     //     user_id: "689de080d237bedf3c690bd0",
+  //     //     meetingCode: "zs_tbA",
+  //     //     date: "2025-08-14T15:25:05.033Z",
+  //     //     __v: 0,
+  //     //   },
+  //     //   {
+  //     //     _id: "689dffd4709955b89def9ea7",
+  //     //     user_id: "689de080d237bedf3c690bd0",
+  //     //     meetingCode: "tyfyhn",
+  //     //     date: "2025-08-14T15:25:08.902Z",
+  //     //     __v: 0,
+  //     //   },
+  //     //   {
+  //     //     _id: "689edfd9df64c496ab57f22d",
+  //     //     user_id: "689de080d237bedf3c690bd0",
+  //     //     meetingCode: "ZBBIpC",
+  //     //     date: "2025-08-15T07:20:57.260Z",
+  //     //     __v: 0,
+  //     //   },
+  //     //   {
+  //     //     _id: "689edfe6df64c496ab57f233",
+  //     //     user_id: "689de080d237bedf3c690bd0",
+  //     //     meetingCode: "safdewrt54",
+  //     //     date: "2025-08-15T07:21:10.730Z",
+  //     //     __v: 0,
+  //     //   },
+  //     // ]);
+  //   } catch (e) {
+  //     res.status(500).json({ message: e.message });
+  //   }
 };
 
 const addToHistory = async (req, res) => {
