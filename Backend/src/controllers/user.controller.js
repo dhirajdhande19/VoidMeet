@@ -128,13 +128,44 @@ const login = async (req, res) => {
 const getUserHistory = async (req, res) => {
   try {
     const { id } = req.user;
-    const userId = mongoose.Types.ObjectId.createFromHexString(id);
+    // const userId = mongoose.Types.ObjectId.createFromHexString(id);
+    // return console.log(userId, id);
 
     // Fetch user and populate meetings
-    const user = await User.findById(userId).populate("meetings");
+    const user = await User.findById(id).populate("meetings");
 
     // Return the meetings array
-    res.json(user.meetings || []);
+    res.status(httpStatus.OK).json(user.meetings);
+    // res.json([
+    //   {
+    //     _id: "689dffd1709955b89def9ea3",
+    //     user_id: "689de080d237bedf3c690bd0",
+    //     meetingCode: "zs_tbA",
+    //     date: "2025-08-14T15:25:05.033Z",
+    //     __v: 0,
+    //   },
+    //   {
+    //     _id: "689dffd4709955b89def9ea7",
+    //     user_id: "689de080d237bedf3c690bd0",
+    //     meetingCode: "tyfyhn",
+    //     date: "2025-08-14T15:25:08.902Z",
+    //     __v: 0,
+    //   },
+    //   {
+    //     _id: "689edfd9df64c496ab57f22d",
+    //     user_id: "689de080d237bedf3c690bd0",
+    //     meetingCode: "ZBBIpC",
+    //     date: "2025-08-15T07:20:57.260Z",
+    //     __v: 0,
+    //   },
+    //   {
+    //     _id: "689edfe6df64c496ab57f233",
+    //     user_id: "689de080d237bedf3c690bd0",
+    //     meetingCode: "safdewrt54",
+    //     date: "2025-08-15T07:21:10.730Z",
+    //     __v: 0,
+    //   },
+    // ]);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
