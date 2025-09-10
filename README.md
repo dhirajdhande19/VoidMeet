@@ -19,8 +19,9 @@ using peer-to-peer connections powered by **PeerJS**.
 
 ---
 
-## 🫶 Upcoming Features
 
+<!-- 
+## 🫶 Upcoming Features
 - **⚡ Video Optimization:** More reliable video call and meeting logic.
 - **🔐 User Authentication (JWT):** Secure login and user sessions.
 - **🖥️ Fullscreen Video:** Pin any user’s video to fullscreen with toggle options.
@@ -32,6 +33,8 @@ using peer-to-peer connections powered by **PeerJS**.
 - **🌙 Dark Mode:** Modern UI with a dark/light mode toggle.
 - **🐳 Docker Support:** Containerized setup with `docker-compose` for quick deployment.
 - **⚙️ CI/CD Pipelines:** Automated builds, testing, and deployment using GitHub Actions.
+-->
+
 
 
 ---
