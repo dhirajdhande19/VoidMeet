@@ -33,6 +33,17 @@ using peer-to-peer connections powered by **PeerJS**.
 - **🌙 Dark Mode:** Modern UI with a dark/light mode toggle.
 - **🐳 Docker Support:** Containerized setup with `docker-compose` for quick deployment.
 - **⚙️ CI/CD Pipelines:** Automated builds, testing, and deployment using GitHub Actions.
+
+
+------------Quick Updations--------------
+1. Overall App Performance Improvement.
+2. 💬 Enhanced Chat: Emojis, file sharing
+3. 📅 Meeting Scheduling: Calendar integration for scheduling and reminders.
+4. 🖥️ Fullscreen Video:** Pin any user’s video to fullscreen with toggle options.
+5. 🌙 Dark Mode & 📱New UI: Modern UI with a dark/light mode toggle.
+6. 🐳 Docker Support: Containerized setup with `docker-compose` for quick deployment.
+7. ⚙️ CI/CD Pipelines: Automated builds, testing, and deployment using GitHub Actions.
+8. Deploy Frontend & Backend Seprately on differnt platforms (Not Necessasary Though)
 -->
 
 
