@@ -12,7 +12,6 @@ const userSchema = new Schema({
   },
   password: { type: String, required: true },
   meetings: [{ type: mongoose.Schema.ObjectId, ref: "Meeting" }],
-  //token: { type: String },
 });
 
 const User = mongoose.model("User", userSchema);

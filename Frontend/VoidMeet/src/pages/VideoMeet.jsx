@@ -25,6 +25,7 @@ import StopScreenShareOutlinedIcon from "@mui/icons-material/StopScreenShareOutl
 import { nanoid } from "nanoid";
 import axios from "axios";
 import server from "../enviornment";
+import EmojiPicker from "emoji-picker-react";
 
 const server_url = server;
 
@@ -525,7 +526,24 @@ export default function VideoMeeetComponent() {
     if (message === "") return;
     socketRef.current.emit("chat-message", message, username);
     setMessage("");
+    setIsEmojiPickerOpen(false);
   };
+
+  let sendEmoji = (EmojiClickData, MouseEvent) => {
+    let emoji = EmojiClickData.emoji;
+    console.log(emoji);
+    setMessage((prev) => prev + emoji);
+  };
+
+  let [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+
+  // let toggleEmojiPicker = () => {
+  //   setIsEmojiPickerOpen(!isEmojiPickerOpen);
+  // };
+
+  // let openEmojiPicker = () => {
+  //   setIsEmojiPickerOpen(!isEmojiPickerOpen);
+  // }
 
   let handleEndCall = () => {
     try {
@@ -706,6 +724,28 @@ export default function VideoMeeetComponent() {
                     label="Type message"
                     variant="outlined"
                   /> */}
+                  <div>
+                    <div
+                      onClick={() => {
+                        setIsEmojiPickerOpen(!isEmojiPickerOpen);
+                      }}
+                    >
+                      Emoji Picker
+                    </div>
+
+                    {isEmojiPickerOpen ? (
+                      <div
+                        onClick={() => {
+                          setIsEmojiPickerOpen(false);
+                        }}
+                      >
+                        Close X
+                      </div>
+                    ) : null}
+                    {isEmojiPickerOpen ? (
+                      <EmojiPicker open={true} onEmojiClick={sendEmoji} />
+                    ) : null}
+                  </div>
                   <input
                     type="text"
                     placeholder="Type Message..."
