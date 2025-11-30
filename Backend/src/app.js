@@ -17,6 +17,9 @@ app.set("port", PORT);
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://voidmeet.onrender.com/"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
   })
 );
 
