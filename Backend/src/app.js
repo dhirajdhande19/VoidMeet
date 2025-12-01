@@ -14,11 +14,28 @@ const MONGO_ATLAS_URL = process.env.ATLAS_URL;
 const PORT = process.env.PORT || 1234;
 
 app.set("port", PORT);
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+  next();
+});
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://voidmeet.onrender.com/"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    origin: ["http://localhost:5173", "https://voidmeet.onrender.com"],
     credentials: true,
   })
 );
@@ -29,6 +46,7 @@ app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
 
 app.use("/api/v1/users", userRoute);
+
 app.get("/ping", (req, res) => {
   res.status(200).json({ message: "Ok" });
 });
@@ -37,8 +55,8 @@ const start = async () => {
   const connectionDB = await mongoose.connect(MONGO_ATLAS_URL);
   console.log(`MONGO Connected to Host: ${connectionDB.connection.host}`);
 
-  server.listen(8000, () => {
-    console.log(`listining on port ${PORT}`);
+  server.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`);
   });
 };
 
