@@ -3,8 +3,8 @@
 > ⚠️ **This repository is now archived.**  
 A newer, improved version of VoidMeet (**v2**) is now available with cleaner code, bug fixes, and updated features.
 
-👉 **VoidMeet v2 – Frontend:** _https://github.com/dhirajdhande19/VoidMeet_V2_Frontend_  
-👉 **VoidMeet v2 – Backend:** _https://github.com/dhirajdhande19/VoidMeet_V2_Backend_
+👉 **VoidMeet v2 – Frontend:** [VoidMeet_V2_Frontend](https://github.com/dhirajdhande19/VoidMeet_V2_Frontend)    
+👉 **VoidMeet v2 – Backend:** [VoidMeet_V2_Backend](https://github.com/dhirajdhande19/VoidMeet_V2_Backend)  
 
 ---
 
@@ -49,7 +49,7 @@ It was my first major WebRTC project and includes:
 
 ## 🌐 Live Demo (Legacy)
 
-👉  _https://voidmeet.onrender.com_
+👉  [voidmeet.onrender.com](https://voidmeet.onrender.com)
 *(May take a few seconds to wake up — Render free tier)*
 
 ---
@@ -72,4 +72,4 @@ All current development continues in **VoidMeet v2**, which includes:
 ## 🙋‍♂️ Author
 
 Built by **Dhiraj Dhande**  
-GitHub: _https://github.com/dhirajdhande19_
+GitHub: [dhirajdhande19](https://github.com/dhirajdhande19)
