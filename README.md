@@ -1,83 +1,75 @@
-# 🎥 VoidMeet – Real-Time Video Chat App
+# 🎥 VoidMeet (Legacy Version – v1)
 
-**VoidMeet** is a Zoom-like video conferencing application built with **React**, **Socket.IO**, and **WebRTC**.  
-It enables users to create or join meeting rooms and engage in **real-time video, audio, and chat communication** 
-using peer-to-peer connections powered by **PeerJS**.
+> ⚠️ **This repository is now archived.**  
+A newer, improved version of VoidMeet (**v2**) is now available with cleaner code, bug fixes, and updated features.
 
-
----
-
-## 🚀 Features
-
-- **🎥 Join or Create Meetings:** Instantly create or join meeting rooms.  
-- **🖥️ Screen Sharing:** Share your screen with participants in real time.  
-- **🔊 Real-Time Video & Audio:** Powered by **WebRTC + PeerJS** for smooth communication.  
-- **💬 Live Chat Messaging:** Chat with participants using **Socket.IO**.  
-- **🔐 Basic Authentication:** Register and log in for a personalized experience.  
-- **🎙️ Mic & Camera Controls:** Toggle your microphone and camera easily.  
-- **📱 Responsive Design:** Clean, minimal interface across all devices.
+👉 **VoidMeet v2 – Frontend:** _https://github.com/dhirajdhande19/VoidMeet_V2_Frontend_  
+👉 **VoidMeet v2 – Backend:** _https://github.com/dhirajdhande19/VoidMeet_V2_Backend_
 
 ---
 
+## 📌 About This Version (v1)
 
-<!-- 
-## 🫶 Upcoming Features
-- **⚡ Video Optimization:** More reliable video call and meeting logic.
-- **🔐 User Authentication (JWT):** Secure login and user sessions.
-- **🖥️ Fullscreen Video:** Pin any user’s video to fullscreen with toggle options.
-- **🗑️ Meeting History Management:** Delete single or all meeting history entries.
-- **📱 Responsive Design:** Seamless experience across mobile, tablet, and desktop.
-- **📹 Screen Recording:** Record and save meetings within the app.
-- **💬 Enhanced Chat:** Emojis, file sharing, and improved chat experience.
-- **📅 Meeting Scheduling:** Calendar integration for scheduling and reminders.
-- **🌙 Dark Mode:** Modern UI with a dark/light mode toggle.
-- **🐳 Docker Support:** Containerized setup with `docker-compose` for quick deployment.
-- **⚙️ CI/CD Pipelines:** Automated builds, testing, and deployment using GitHub Actions.
+This is the **original VoidMeet** application — a full-stack real-time video chat app built using WebRTC, PeerJS, and Socket.IO.
 
+It was my first major WebRTC project and includes:
 
-------------Quick Updations--------------
-1. Overall App Performance Improvement.
-2. 💬 Enhanced Chat: Emojis
-3. 📅 Meeting Scheduling: Calendar integration for scheduling and reminders.
-4. 🖥️ Fullscreen Video: Pin any user’s video to fullscreen with toggle options.
-5. 🌙 Dark Mode & 📱New UI: Modern UI with a dark/light mode toggle.
-6. 🐳 Docker Support: Containerized setup with `docker-compose` for quick deployment.
-7. ⚙️ CI/CD Pipelines: Automated builds, testing, and deployment using GitHub Actions.
-8. Deploy Frontend & Backend Seprately on differnt platforms (Not Necessasary Though)
--->
+- 🎥 Real-time video & audio calls (WebRTC + PeerJS)
+- 👥 Join/Create meeting rooms
+- 🖥️ Screen sharing
+- 💬 Live chat using Socket.IO
+- 🔐 Basic login/signup authentication
+- 🕘 Meeting history stored in MongoDB
+- 📱 Fully responsive UI with plain CSS
 
-
+> This version helped me learn WebRTC, peer connections, socket events, room logic, and real-time communication patterns.
 
 ---
 
-## 🔐 Authentication
+## 🛠️ Tech Stack (v1)
 
-VoidMeet includes basic user authentication:
-- Register/Login with username & password
-- Passwords are hashed using `bcrypt`
-- Access to Home & History is restricted to logged-in users
+**Frontend:**  
+- React  
+- WebRTC  
+- PeerJS  
+- Socket.IO Client  
+- Plain CSS (fully responsive)
 
-> Note: Uses simple session tokens (not JWT-based)
+**Backend:**  
+- Node.js  
+- Express.js  
+- Socket.IO  
+- MongoDB (Atlas)  
+- bcrypt  
+
+**Deployment:**  
+- Render (Frontend & Backend deployed separately)
 
 ---
 
-## 🛠️ Tech Stack
+## 🌐 Live Demo (Legacy)
 
-- **Frontend:** React, WebRTC, PeerJS, Socket.IO Client  
-- **Backend:** Node.js, Express, Socket.IO, MongoDB (Atlas), bcrypt  
-- **Deployment:** Frontend & Backend deployed separately on **Render**
+👉  _https://voidmeet.onrender.com_
+*(May take a few seconds to wake up — Render free tier)*
 
 ---
 
-## 🌐 Live App
+## 📦 Status
 
-👉 [Try VoidMeet](https://voidmeet.onrender.com)
+This version is **no longer maintained**.
 
->  🛰️ Backend and frontend are deployed separately on Render and connected using a simple environment toggle in code.
+All current development continues in **VoidMeet v2**, which includes:  
+- improved connection stability  
+- better cleanup logic  
+- fewer WebRTC bugs  
+- cleaner socket events  
+- UI/UX touch-ups  
+- emoji picker in chat  
+- small login page improvements  
 
 ---
 
 ## 🙋‍♂️ Author
 
-Built by [Dhiraj Dhande](https://github.com/dhirajdhande19)  
-As a learning project to explore WebRTC, PeerJS, and real-time socket communication.
+Built by **Dhiraj Dhande**  
+GitHub: _https://github.com/dhirajdhande19_
